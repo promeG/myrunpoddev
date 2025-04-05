@@ -28,7 +28,7 @@ extras_require = {
 if __name__ == "__main__":
 
     setup(
-        name="runpod",
+        name="myrunpoddev",
         use_scm_version=True,
         setup_requires=["setuptools>=45", "setuptools_scm", "wheel"],
         install_requires=install_requires,

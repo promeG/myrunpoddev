@@ -33,7 +33,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     "--rp_log_level",
     type=str,
-    default=None,
+    default='DEBUG',
     help="""Controls what level of logs are printed to the console.
                     Options: ERROR, WARN, INFO, and DEBUG.""",
 )

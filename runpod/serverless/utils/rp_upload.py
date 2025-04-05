@@ -22,7 +22,10 @@ from tqdm_loggable.auto import tqdm
 logger = logging.getLogger("runpod upload utility")
 FMT = "%(filename)-20s:%(lineno)-4d %(asctime)s %(message)s"
 logging.basicConfig(level=logging.INFO, format=FMT, handlers=[logging.StreamHandler()])
-
+# EXP_GU
+logging.basicConfig(filename='app.log', level=logging.DEBUG)
+requests.packages.urllib3.add_stderr_logger()
+# EXP_GU END
 
 def extract_region_from_url(endpoint_url):
     """

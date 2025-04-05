@@ -1,5 +1,5 @@
 [project]
-name = "runpod"
+name = "myrunpoddev"
 dynamic = ["version", "dependencies"]
 description = "🐍 | Python library for RunPod API and serverless worker SDK."
 readme = { file = "README.md", content-type = "text/markdown" }

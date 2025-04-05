@@ -12,6 +12,7 @@ import time
 import uuid
 from typing import Optional, Tuple
 from urllib.parse import urlparse
+import requests
 
 import boto3
 from boto3 import session

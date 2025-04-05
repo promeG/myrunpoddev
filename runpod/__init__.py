@@ -50,6 +50,6 @@ endpoint_url_base = os.environ.get(
 
 
 # --------------------------- Force Logging Levels --------------------------- #
-logging.getLogger("urllib3").setLevel(logging.WARNING)
-logging.getLogger("paramiko").setLevel(logging.WARNING)
-logging.getLogger("uvicorn").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.DEBUG)
+logging.getLogger("paramiko").setLevel(logging.DEBUG)
+logging.getLogger("uvicorn").setLevel(logging.DEBUG)

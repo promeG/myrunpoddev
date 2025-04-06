@@ -12,6 +12,7 @@ import sys
 import time
 from typing import Any, Dict
 from .aiohttp_client_logger import HTTPClientLogger
+import aiohttp
 
 from runpod.serverless import core
 

@@ -151,7 +151,7 @@ def enable_global_http_logging():
     # 应用补丁
     aiohttp.ClientSession.__init__ = patched_init
 
-enable_global_http_logging()
+# enable_global_http_logging()
 
 
 # ---------------------------------------------------------------------------- #

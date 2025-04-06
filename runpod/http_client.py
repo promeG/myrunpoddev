@@ -9,6 +9,7 @@ from aiohttp import ClientSession, ClientTimeout, TCPConnector, ClientResponseEr
 
 from .cli.groups.config.functions import get_credentials
 from .user_agent import USER_AGENT
+from .serverless.aiohttp_client_logger import HTTPClientLogger
 
 
 class TooManyRequests(ClientResponseError):
@@ -37,7 +38,15 @@ def AsyncClientSession(*args, **kwargs):  # pylint: disable=invalid-name
     Deprecation from aiohttp.ClientSession forbids inheritance.
     This is now a factory method
     """
+    logging.basicConfig(level=logging.DEBUG)
+    http_logger = HTTPClientLogger(
+        request_headers='ALWAYS',
+        request_body='ALWAYS',
+        response_headers='ALWAYS',
+        response_body='ALWAYS'
+    )
     return ClientSession(
+        trace_configs=[http_logger],
         connector=TCPConnector(limit=0),
         headers=get_auth_header(),
         timeout=ClientTimeout(600, ceil_threshold=400),

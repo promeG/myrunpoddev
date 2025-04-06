@@ -3,6 +3,7 @@ HTTP Client abstractions
 """
 
 import os
+import logging
 
 import requests
 from aiohttp import ClientSession, ClientTimeout, TCPConnector, ClientResponseError

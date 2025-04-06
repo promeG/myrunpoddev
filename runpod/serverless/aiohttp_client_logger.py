@@ -70,7 +70,7 @@ class HTTPClientLogger(aiohttp.TraceConfig):
             trace_config_ctx.request_chunks.append(params.chunk)
 
     async def log_request(self, session, trace_config_ctx, params):
-        log.log("%s %s".format(trace_config_ctx.method, trace_config_ctx.url), "ERROR")
+        log.log("%s %s" % (trace_config_ctx.method, trace_config_ctx.url), "ERROR")
 
     async def store_response_info(self, session, trace_config_ctx, params):
         trace_config_ctx.status = params.response.status
@@ -83,7 +83,7 @@ class HTTPClientLogger(aiohttp.TraceConfig):
 
     async def log_response(self, session, trace_config_ctx, params):
         log.log(
-            "%s %s - %s %.3f sec".format(
+            "%s %s - %s %.3f sec" % (
                 trace_config_ctx.method,
                 trace_config_ctx.url,
                 trace_config_ctx.status,
@@ -94,7 +94,7 @@ class HTTPClientLogger(aiohttp.TraceConfig):
 
         if self._request_headers == 'ALWAYS' or self._request_headers == 'ON_ERROR' and is_error_status:
             log.log(
-                "%s %s - %s\nreq headers:\n%r".format(
+                "%s %s - %s\nreq headers:\n%r" % (
                 trace_config_ctx.method, trace_config_ctx.url, trace_config_ctx.status,
                 trace_config_ctx.request_headers,
                 ), "ERROR"
@@ -102,21 +102,21 @@ class HTTPClientLogger(aiohttp.TraceConfig):
 
         if self._request_body == 'ALWAYS' or self._request_body == 'ON_ERROR' and is_error_status:
             log.log(
-                "%s %s - %s\nreq body:\n%r".format(
+                "%s %s - %s\nreq body:\n%r" % (
                 trace_config_ctx.method, trace_config_ctx.url, trace_config_ctx.status,
                 shorten(b''.join(trace_config_ctx.request_chunks), self._request_body_max_len, b'[...]')), "ERROR"
             )
 
         if self._response_headers == 'ALWAYS' or self._response_headers == 'ON_ERROR' and is_error_status:
             log.log(
-                "%s %s - %s\nresp headers:\n%r".format(
+                "%s %s - %s\nresp headers:\n%r" % (
                 trace_config_ctx.method, trace_config_ctx.url, trace_config_ctx.status,
                 trace_config_ctx.response_headers), "ERROR"
             )
 
         if self._response_body == 'ALWAYS' or self._response_body == 'ON_ERROR' and is_error_status:
             log.log(
-                "%s %s - %s\nresp body:\n%r".format(
+                "%s %s - %s\nresp body:\n%r" % (
                 trace_config_ctx.method, trace_config_ctx.url, trace_config_ctx.status,
                 shorten(b''.join(trace_config_ctx.response_chunks), self._response_body_max_len, b'[...]')), "ERROR"
             )

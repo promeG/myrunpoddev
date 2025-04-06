@@ -11,6 +11,7 @@ import signal
 import sys
 import time
 from typing import Any, Dict
+from aiohttp_client_logger import HTTPClientLogger
 
 from runpod.serverless import core
 
@@ -124,6 +125,32 @@ def _signal_handler(sig, frame):
     del sig, frame
     log.info("SIGINT received. Shutting down.")
     sys.exit(0)
+
+
+def enable_global_http_logging():
+    # 保存原始ClientSession.__init__
+    original_init = aiohttp.ClientSession.__init__
+
+    # 创建补丁版本
+    def patched_init(self, *args, **kwargs):
+        http_logger = HTTPClientLogger(
+            request_headers='ALWAYS',
+            request_body='ALWAYS',
+            response_headers='ALWAYS',
+            response_body='ALWAYS'
+        )
+
+        if 'trace_configs' in kwargs:
+            kwargs['trace_configs'].append(http_logger)
+        else:
+            kwargs['trace_configs'] = [http_logger]
+
+        return original_init(self, *args, **kwargs)
+
+    # 应用补丁
+    aiohttp.ClientSession.__init__ = patched_init
+
+enable_global_http_logging()
 
 
 # ---------------------------------------------------------------------------- #

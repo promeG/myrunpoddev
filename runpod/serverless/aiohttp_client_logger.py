@@ -3,8 +3,9 @@ import time
 from typing import Optional
 
 import aiohttp.log
+from runpod.serverless.modules.rp_logger import RunPodLogger
 
-logger = logging.getLogger('http.requests')
+log = RunPodLogger()
 
 
 def shorten(data: bytes, max_len: int, placeholder: bytes = b'') -> bytes:
@@ -69,7 +70,7 @@ class HTTPClientLogger(aiohttp.TraceConfig):
             trace_config_ctx.request_chunks.append(params.chunk)
 
     async def log_request(self, session, trace_config_ctx, params):
-        logger.log(self._request_loglevel, "%s %s", trace_config_ctx.method, trace_config_ctx.url)
+        log.log("%s %s".format(trace_config_ctx.method, trace_config_ctx.url), "ERROR")
 
     async def store_response_info(self, session, trace_config_ctx, params):
         trace_config_ctx.status = params.response.status
@@ -81,44 +82,41 @@ class HTTPClientLogger(aiohttp.TraceConfig):
             trace_config_ctx.response_chunks.append(params.chunk)
 
     async def log_response(self, session, trace_config_ctx, params):
-        logger.log(
-            self._request_loglevel,
-            "%s %s - %s %.3f sec",
-            trace_config_ctx.method,
-            trace_config_ctx.url,
-            trace_config_ctx.status,
-            time.time() - trace_config_ctx.started_at,
+        log.log(
+            "%s %s - %s %.3f sec".format(
+                trace_config_ctx.method,
+                trace_config_ctx.url,
+                trace_config_ctx.status,
+                time.time() - trace_config_ctx.started_at
+            ), "ERROR"
         )
         is_error_status = trace_config_ctx.status >= 400
 
         if self._request_headers == 'ALWAYS' or self._request_headers == 'ON_ERROR' and is_error_status:
-            logger.log(
-                self._content_loglevel,
-                "%s %s - %s\nreq headers:\n%r",
+            log.log(
+                "%s %s - %s\nreq headers:\n%r".format(
                 trace_config_ctx.method, trace_config_ctx.url, trace_config_ctx.status,
                 trace_config_ctx.request_headers,
+                ), "ERROR"
             )
 
         if self._request_body == 'ALWAYS' or self._request_body == 'ON_ERROR' and is_error_status:
-            logger.log(
-                self._content_loglevel,
-                "%s %s - %s\nreq body:\n%r",
+            log.log(
+                "%s %s - %s\nreq body:\n%r".format(
                 trace_config_ctx.method, trace_config_ctx.url, trace_config_ctx.status,
-                shorten(b''.join(trace_config_ctx.request_chunks), self._request_body_max_len, b'[...]'),
+                shorten(b''.join(trace_config_ctx.request_chunks), self._request_body_max_len, b'[...]')), "ERROR"
             )
 
         if self._response_headers == 'ALWAYS' or self._response_headers == 'ON_ERROR' and is_error_status:
-            logger.log(
-                self._content_loglevel,
-                "%s %s - %s\nresp headers:\n%r",
+            log.log(
+                "%s %s - %s\nresp headers:\n%r".format(
                 trace_config_ctx.method, trace_config_ctx.url, trace_config_ctx.status,
-                trace_config_ctx.response_headers,
+                trace_config_ctx.response_headers), "ERROR"
             )
 
         if self._response_body == 'ALWAYS' or self._response_body == 'ON_ERROR' and is_error_status:
-            logger.log(
-                self._content_loglevel,
-                "%s %s - %s\nresp body:\n%r",
+            log.log(
+                "%s %s - %s\nresp body:\n%r".format(
                 trace_config_ctx.method, trace_config_ctx.url, trace_config_ctx.status,
-                shorten(b''.join(trace_config_ctx.response_chunks), self._response_body_max_len, b'[...]'),
+                shorten(b''.join(trace_config_ctx.response_chunks), self._response_body_max_len, b'[...]')), "ERROR"
             )
